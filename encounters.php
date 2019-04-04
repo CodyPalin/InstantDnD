@@ -1,6 +1,10 @@
 <?php
 session_start();
 $_SESSION['current_page'] = "encounters.php";
+if(!isset($_SESSION['view_saved']))
+	$_SESSION['view_saved'] = false;
+if(!isset($_SESSION['logged_in']))
+	$_SESSION['logged_in'] = false;
 ?>
 <html>
   <head>
@@ -39,7 +43,7 @@ $_SESSION['current_page'] = "encounters.php";
 		</ul>
 			</div>
 		<div id = "footer">
-			<div id = "fcontent1" >Footer Stuff</div>
+			<div id = "fcontent1" >This web site is not affiliated with, endorsed, sponsored, or specifically approved by Wizards of the Coast LLC. This web site may use the trademarks and other intellectual property of Wizards of the Coast LLC, which is permitted under Wizards' Fan Site Policy. For example, Dungeons & Dragons® is a trademark of Wizards of the Coast. For more information about Wizards of the Coast or any of Wizards' trademarks or other intellectual property, please visit their website at (www.wizards.com).</div>
 		</div>
 
   </body>

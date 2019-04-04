@@ -3,6 +3,10 @@ session_start();
 $_SESSION['current_page'] = "NPCs.php";
 include 'Dao.php';
 include 'random.php';
+if(!isset($_SESSION['view_saved']))
+	$_SESSION['view_saved'] = false;
+if(!isset($_SESSION['logged_in']))
+	$_SESSION['logged_in'] = false;
 $Dao = new Dao();
 $myPDO=$Dao->getConnection();
 $index = 1; //number of components
@@ -70,27 +74,46 @@ array_push($backgrounds, $myPDO->query("select NPC_background from npc_backgroun
 			<li id="dungeons" class="tabs" ><a href="dungeons.php">Dungeons</a></li>
 		</ul>
 		<ul id = components>
-			<li id ="component1" class = "components">
-				<div class= comptext id = comptext0> NPC: </div>
-				<div id= namediv>
-				<input class="textboxes" id="name" type="text" name="name" value="<?php echo $names[$index];?>">
-				<input class="textboxes" id="race" type="text" name="race" value="<?php echo $races[$index];?>">
-				</div>
-				<input class="textboxes" id="background" type="text" name="background" value="<?php echo $backgrounds[$index];?>">
-				<div class= comptext id = comptext1> Alignment: </div>
-				<input class="textboxes" id="alignment" type="text" name="alignment" value="<?php echo $alignments[$index];?>">
-				<div class= comptext id = comptext1> <?php echo $names[$index];?> has the following items: </div>
-				<input class="textboxes" id="weapons" type="text" name="weapons" value="<?php echo $weapons[$index];?>">
-				<input class="textboxes" id="loots" type="text" name="loots" value="<?php echo $loots[$index];?>">
-				<div class= comptext id = comptext1> <?php echo $names[$index];?> can perform these attacks: </div>
-				<input class="textboxes" id="damages" type="text" name="damages" value="<?php echo $weapons[$index].': '.$damages[$index];?>">
-				
-			</li>
-			<input type=button id ="add" value="+" class = "components">
+			<?php
+			if(!$_SESSION['view_saved']){
+				echo
+				'<form id ="component1" class = "components" action="save_NPC.php">
+					<div class= comptext id = comptext0> NPC: </div>
+					<div id= namediv>
+					<input class="textboxes" id="name" type="text" name="name" value="'.$names[$index].'">
+					<input class="textboxes" id="race" type="text" name="race" value="'.$races[$index].'">
+					</div>
+					<input class="textboxes" id="background" type="text" name="background" value="'.$backgrounds[$index].'">
+					<div class= comptext id = comptext1> Alignment: </div>
+					<input class="textboxes" id="alignment" type="text" name="alignment" value="'.$alignments[$index].'">
+					<div class= comptext id = comptext1> <?php echo $names[$index];?> has the following items: </div>
+					<input class="textboxes" id="weapons" type="text" name="weapons" value="'.$weapons[$index].'">
+					<input class="textboxes" id="loots" type="text" name="loots" value="'.$loots[$index].'">
+					<div class= comptext id = comptext1>'. $names[$index] .' can perform this attack with a '.$weapons[$index].'</div>
+					<input class="textboxes" id="damages" type="text" name="damages" value="'.$damages[$index].'">
+					<input id = "submit" type="submit" value="Save">
+				</form>
+				<input type=button id ="add" value="+" class = "components">';
+			}
+			else
+			{
+				$numsavedstmt = $myPDO->prepare("select saved_NPCs from user where username = '$_SESSION[user]'");
+				$numsavedstmt->execute();
+				$numsaved = (($numsavedstmt->fetch()[0]));
+				if($numsaved == 0){
+				echo '	<form id ="component1" class = "components" action="save_NPC.php">
+						<div class= comptext id = comptext0> You currently have no saved NPCs. Generate more and then save an NPC you like. </div>
+						</form>';
+				}
+				else{
+					//display saved
+				}
+			}
+			?>
 		</ul>
 			</div>
 		<div id = "footer">
-			<div id = "fcontent1">Footer Stuff</div>
+			<div id = "fcontent1" >This web site is not affiliated with, endorsed, sponsored, or specifically approved by Wizards of the Coast LLC. This web site may use the trademarks and other intellectual property of Wizards of the Coast LLC, which is permitted under Wizards' Fan Site Policy. For example, Dungeons & Dragons® is a trademark of Wizards of the Coast. For more information about Wizards of the Coast or any of Wizards' trademarks or other intellectual property, please visit their website at (www.wizards.com).</div>
 		</div>
 
   </body>

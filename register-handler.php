@@ -4,8 +4,9 @@ include 'Dao.php';
 include 'filter.php';
 $Dao = new Dao();
 $myPDO=$Dao->getConnection();
-
-$user_exists = (($myPDO->query("select username from user where username = '$_POST[username]'")->fetch()[0]) != null);
+$stmt1 = $myPDO->prepare("select username from user where username = '$_POST[username]'");
+$stmt1->execute();
+$user_exists = (($stmt1->fetch()[0]) != null);
 if ($_POST["password"] != $_POST["confirm_password"])
 {
 	$_SESSION['message'] = "Error, the passwords do not match";
@@ -31,6 +32,7 @@ else {
 	$_POST["username"] = filter($_POST["username"]);
 	$_POST["password"] = filter($_POST["password"]);
 	$sql = "INSERT INTO user (username, password) VALUES (?,?)";
+	//prepare query to prevent sql injection attacks
 	$stmt= $myPDO->prepare($sql);
 	$stmt->execute([$_POST["username"], $_POST["password"]]);
 	$_SESSION['logged_in'] = true;
