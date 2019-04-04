@@ -1,0 +1,25 @@
+@import 'layout-base.css';
+
+#items{
+background-color: yellow;
+}
+#weapons{
+width: 49%;
+}
+#adjectives{
+width: 50%;
+float:right;
+margin-left:0%;
+
+}
+#weapondiv{
+width: 100%
+}
+
+textarea{
+resize:none;
+}
+
+.components{
+  height: auto;
+}

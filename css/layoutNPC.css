@@ -1,0 +1,8 @@
+@import 'layout-base.css';
+
+#NPCs{
+background-color: yellow;
+}
+.components{
+  height: auto;
+}

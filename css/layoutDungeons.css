@@ -1,0 +1,9 @@
+@import 'layout-base.css';
+
+#dungeons{
+background-color: yellow;
+}
+
+.components{
+  height: auto;
+}

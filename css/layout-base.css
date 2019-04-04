@@ -1,0 +1,146 @@
+ul {
+	float: left;
+	list-style: none;
+}
+
+#container{
+   min-height: 100%;
+   position: relative;
+   padding-bottom:50px;
+   zoom: 1.5;
+}
+#top-container{
+  float:left;
+  width: 100%;
+  height: 35px;
+  margin: 0;
+  padding: 0;
+  line-height: 32px;
+
+}
+#logo{
+float: left;
+height: 32px;
+width: 32px;
+display:inline-block;
+}
+#login{
+float: right;
+margin-right:15;
+text-align:center;
+background-color: #AAAAAA;
+height: 32px;
+width: 100px;
+display:inline-block;
+border-style: inset;
+cursor: pointer;
+}
+#welcome{
+  list-style: none;
+  float: right;
+  margin-right: 15;
+  background-color: #00FFFF;
+  padding: 5 2;
+}
+#title {
+  float: left;
+  background-color: red; 
+  width: 85%;
+  max-width: 750px;
+  height: 100px;
+  margin: 10px 7.5%;
+  line-height: 100px;
+  text-align: center;
+  border-style: double;
+}
+#box2 {
+  background-color: blue; 
+  width: 50px;
+  height: 20px;
+  margin: 10px 10px;
+  text-align: center;
+  line-height: 15px;
+  display: inline-block;
+  list-style: none;
+}
+#body{
+ background-color: #f8f8f8;
+}
+#tabs{
+  float:left;
+  margin: 10px 2.5%;
+  width: 95%;
+  padding: 0;
+  background-color: rgb(127, 145, 176);
+  display: block;
+  overflow: auto;
+}
+.tabs{
+  margin: 0px;
+  width: 100;
+  height: 50;
+  display: inline-table;
+  list-style: none;
+  background-color: rgb(127, 145, 176);
+  text-align: center;
+  line-height: 50px;
+}
+#character-sheets{
+  width: 150;
+}
+#html{
+background-color: #f8f8f8
+}
+html, body{
+height:100%
+}
+
+#components{
+float:left;
+}
+.components{
+  float:left;
+  display: inline;
+  margin: 40px;
+  height: 500px;
+  width: 300px;
+  background-color: #AFAFCF;
+  padding: 5px;
+}
+#add{
+  border-style: inset;
+  border-color: green;
+  font-size: 40;
+  height: 60;
+  width: 60;
+  text-align: center;
+  line-height: 60px;
+  color: white;
+  padding:0;
+  background-color: green;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+#footer {
+  position: relative;
+  background-color: #AAAAAA; 
+  bottom: 0px;
+  width: 100%;
+  height: 50px;
+  margin-top: -50px;
+  padding-left:0%;
+  margin-left: 0px;
+  clear: both;
+}
+#fcontent1{
+  position: relative;
+  text-align: left;
+  margin-left: 5;
+  line-height: 50px;
+  width: 100%;
+}
+.textboxes{
+  line-height: 12px;
+  margin: 2px 0px;
+  width: 100%;
+}

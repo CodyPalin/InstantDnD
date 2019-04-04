@@ -1,0 +1,32 @@
+div {
+  margin-bottom: 5px;
+}
+#header{
+width:100%;
+text-align:center;
+}
+#h1{
+display:inline-block;
+}
+#form{
+display:inline-block;
+}
+#outerform{
+width:100%;
+text-align:center;
+}
+#createaccount{
+width: 100px;
+}
+#message {
+  width: 300px;
+  padding: 10 10;
+  margin: 10 10;
+  background-color: red;
+  color: white;
+}
+
+#logout {
+  float:right;
+  margin-right: 50px;
+}
