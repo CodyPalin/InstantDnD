@@ -65,8 +65,8 @@ array_push($loot_locations, $myPDO->query("select location from dungeon_loot_loc
 		<ul id = components>
 			<?php
 			if(!$_SESSION['view_saved']){
-				echo
-				'<form id ="component1" class = "components" action="save_dungeon.php">
+				$echo =
+				'<form id ="component1" method = "post" class = "components" action="save_dungeon.php">
 					<div class= comptext id = comptext0> The dungeon is: </div>
 					<input class="textboxes" id="name" type="text" name="name" value="'.$name[$index].'">
 					<div class= comptext id = comptext0> and is located: </div>
@@ -75,9 +75,16 @@ array_push($loot_locations, $myPDO->query("select location from dungeon_loot_loc
 					<input class="textboxes" id="dungeon_lighting" type="text" name="dungeon_lighting" value="'.$dungeon_lighting[$index].'">
 					<div class= comptext id = comptext3> There is loot in this dungeon:</div>
 					<input class="textboxes" id="loot_locations" type="text" name="loot_locations" value="'.$loot_locations[$index].'">
-					<input id = "submit" type="submit" value="Save">
-				</form>
+					<input id = "submit" type="submit" value="Save">';
+					
+					  if (isset($_SESSION['message'])) {
+						$echo .="<div id='message'>" . $_SESSION['message'] . "</div>";
+					  }
+					  unset($_SESSION['message']);
+				$echo .=	
+				'</form>
 				<input type=button id ="add" value="+" class = "components">';
+				echo $echo;
 			}
 			else
 			{
@@ -91,6 +98,47 @@ array_push($loot_locations, $myPDO->query("select location from dungeon_loot_loc
 				}
 				else{
 					//display saved
+					$idstmt = $myPDO->prepare("SELECT id FROM saved_dungeons WHERE user_id = '$_SESSION[userid]'");
+					$idstmt->execute();
+					$saved_id = $idstmt->fetchAll();
+					
+					$namestmt = $myPDO->prepare("SELECT dungeon_name FROM saved_dungeons WHERE user_id = '$_SESSION[userid]'");
+					$namestmt->execute();
+					$saved_name = $namestmt->fetchAll();
+					
+					$envstmt = $myPDO->prepare("SELECT dungeon_environment FROM saved_dungeons WHERE user_id = '$_SESSION[userid]'");
+					$envstmt->execute();
+					$saved_env = $envstmt->fetchAll();
+					
+					$lightstmt = $myPDO->prepare("SELECT dungeon_lighting FROM saved_dungeons WHERE user_id = '$_SESSION[userid]'");
+					$lightstmt->execute();
+					$saved_lighting = $lightstmt->fetchAll();
+					
+					$lootstmt = $myPDO->prepare("SELECT loot_locations FROM saved_dungeons WHERE user_id = '$_SESSION[userid]'");
+					$lootstmt->execute();
+					$saved_loot = $lootstmt->fetchAll();
+					for($i = 0; $i<=$numsaved-1; $i++){
+					$echo =
+					'<form id ="component1" method = "post" class = "components" action="save_dungeon.php">
+						<div class= comptext id = comptext0> The dungeon is: </div>
+						<input class="textboxes" id="name" type="text" name="name" value="'.$saved_name[$i][0].'">
+						<div class= comptext id = comptext0> and is located: </div>
+						<input class="textboxes" id="dungeon_environment" type="text" name="dungeon_environment" value="'.$saved_env[$i][0].'">
+						<div class= comptext id = comptext2> The dungeon is currently: </div>
+						<input class="textboxes" id="dungeon_lighting" type="text" name="dungeon_lighting" value="'.$saved_lighting[$i][0].'">
+						<div class= comptext id = comptext3> There is loot in this dungeon:</div>
+						<input class="textboxes" id="loot_locations" type="text" name="loot_locations" value="'.$saved_loot[$i][0].'">
+						<input id="hiddentextboxes" type="text" name="saved_id" value="'.$saved_id[$i][0].'">
+						<input id = "submit" type="submit" value="Save">';
+						
+						
+						  if (isset($_SESSION['message'])) {
+							$echo .="<div id='message'>" . $_SESSION['message'] . "</div>";
+						  }
+						  unset($_SESSION['message']);
+					$echo .='</form>';
+					echo $echo;
+					}
 				}
 			}
 			?>

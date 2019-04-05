@@ -106,6 +106,9 @@ float:left;
   background-color: #AFAFCF;
   padding: 5px;
 }
+#hiddentextboxes{
+display: none;
+}
 #submit{
 background-color: limegreen;
 border-color: limegreen;

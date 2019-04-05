@@ -26,6 +26,13 @@ else {
 
 	$_SESSION['logged_in'] = true;
 	$_SESSION['user'] = $_POST["username"];
+	
+	$idstmt= $myPDO->prepare("select id from user where username = '$_SESSION[user]'");
+	$idstmt->execute();
+	$id = $idstmt->fetch()[0];
+	
+	$_SESSION['userid']=$id;
+	
 	header("Location:".$_SESSION['current_page']);
 	
 }

@@ -4,6 +4,9 @@ include 'Dao.php';
 include 'filter.php';
 $Dao = new Dao();
 $myPDO=$Dao->getConnection();
+
+if(!isset($_SESSION['current_page']))
+	$_SESSION['current_page'] = "items.php";
 $stmt1 = $myPDO->prepare("select username from user where username = '$_POST[username]'");
 $stmt1->execute();
 $user_exists = (($stmt1->fetch()[0]) != null);
@@ -37,7 +40,14 @@ else {
 	$stmt->execute([$_POST["username"], $_POST["password"]]);
 	$_SESSION['logged_in'] = true;
 	$_SESSION['user'] = $_POST["username"];
+	
+	$idstmt= $myPDO->prepare("select id from user where username = '$_SESSION[user]'");
+	$idstmt->execute();
+	$id = $idstmt->fetch()[0];
+	
+	$_SESSION['userid']=$id;
 	header("Location:".$_SESSION['current_page']);
+	exit();
 	
 }
 ?>
