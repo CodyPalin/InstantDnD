@@ -77,10 +77,10 @@ array_push($loot_locations, $myPDO->query("select location from dungeon_loot_loc
 					<input class="textboxes" id="loot_locations" type="text" name="loot_locations" value="'.$loot_locations[$index].'">
 					<input id = "submit" type="submit" value="Save">';
 					
-					  if (isset($_SESSION['message'])) {
-						$echo .="<div id='message'>" . $_SESSION['message'] . "</div>";
-					  }
-					  unset($_SESSION['message']);
+						if (isset($_SESSION['message'])) {
+							$echo .="<div id='message'>" . $_SESSION['message'] . "</div>";
+						}
+						unset($_SESSION['message']);
 				$echo .=	
 				'</form>
 				<input type=button id ="add" value="+" class = "components">';
@@ -98,6 +98,8 @@ array_push($loot_locations, $myPDO->query("select location from dungeon_loot_loc
 				}
 				else{
 					//display saved
+					
+					//fetch saved data
 					$idstmt = $myPDO->prepare("SELECT id FROM saved_dungeons WHERE user_id = '$_SESSION[userid]'");
 					$idstmt->execute();
 					$saved_id = $idstmt->fetchAll();
@@ -117,6 +119,8 @@ array_push($loot_locations, $myPDO->query("select location from dungeon_loot_loc
 					$lootstmt = $myPDO->prepare("SELECT loot_locations FROM saved_dungeons WHERE user_id = '$_SESSION[userid]'");
 					$lootstmt->execute();
 					$saved_loot = $lootstmt->fetchAll();
+					
+					//echo saved components
 					for($i = 0; $i<=$numsaved-1; $i++){
 					$echo =
 					'<form id ="component1" method = "post" class = "components" action="save_dungeon.php">

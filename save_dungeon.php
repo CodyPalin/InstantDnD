@@ -46,9 +46,10 @@ else{
 		$sql = "INSERT INTO saved_dungeons (user_id, dungeon_name, dungeon_environment, dungeon_lighting, loot_locations) VALUES (?,?,?,?,?)";
 		$insertstmt = $myPDO->prepare($sql);
 		$insertstmt->execute([$id, $_POST["name"],$_POST["dungeon_environment"],$_POST["dungeon_lighting"],$_POST["loot_locations"]]);
-	$numstmt = $myPDO->prepare("UPDATE user SET saved_dungeons = saved_dungeons+1 WHERE id = '$id'");
-	$numstmt->execute();
-	$_SESSION['message'] = "Saved Successfully!";
+		
+		$numstmt = $myPDO->prepare("UPDATE user SET saved_dungeons = saved_dungeons+1 WHERE id = '$id'");
+		$numstmt->execute();
+		$_SESSION['message'] = "Saved Successfully!";
 	}
 	else
 	{

@@ -76,8 +76,8 @@ array_push($backgrounds, $myPDO->query("select NPC_background from npc_backgroun
 		<ul id = components>
 			<?php
 			if(!$_SESSION['view_saved']){
-				echo
-				'<form id ="component1" class = "components" action="save_NPC.php">
+				$echo =
+				'<form id ="component1" method = "post" class = "components" action="save_NPC.php">
 					<div class= comptext id = comptext0> NPC: </div>
 					<div id= namediv>
 					<input class="textboxes" id="name" type="text" name="name" value="'.$names[$index].'">
@@ -91,9 +91,16 @@ array_push($backgrounds, $myPDO->query("select NPC_background from npc_backgroun
 					<input class="textboxes" id="loots" type="text" name="loots" value="'.$loots[$index].'">
 					<div class= comptext id = comptext1>'. $names[$index] .' can perform this attack with a '.$weapons[$index].'</div>
 					<input class="textboxes" id="damages" type="text" name="damages" value="'.$damages[$index].'">
-					<input id = "submit" type="submit" value="Save">
-				</form>
+					<input id = "submit" type="submit" value="Save">';
+					
+						if (isset($_SESSION['message'])) {
+								$echo .="<div id='message'>" . $_SESSION['message'] . "</div>";
+							}
+							unset($_SESSION['message']);
+				$echo .=
+				'</form>
 				<input type=button id ="add" value="+" class = "components">';
+				echo $echo;
 			}
 			else
 			{
@@ -107,6 +114,67 @@ array_push($backgrounds, $myPDO->query("select NPC_background from npc_backgroun
 				}
 				else{
 					//display saved
+					
+					//fetch saved data
+					$idstmt = $myPDO->prepare("SELECT id FROM saved_npcs WHERE user_id = '$_SESSION[userid]'");
+					$idstmt->execute();
+					$saved_id = $idstmt->fetchAll();
+					
+					$namestmt = $myPDO->prepare("SELECT NPC_name FROM saved_npcs WHERE user_id = '$_SESSION[userid]'");
+					$namestmt->execute();
+					$saved_names = $namestmt->fetchAll();
+					
+					$racestmt = $myPDO->prepare("SELECT NPC_race FROM saved_npcs WHERE user_id = '$_SESSION[userid]'");
+					$racestmt->execute();
+					$saved_races = $racestmt->fetchAll();
+					
+					$backgroundstmt = $myPDO->prepare("SELECT NPC_background FROM saved_npcs WHERE user_id = '$_SESSION[userid]'");
+					$backgroundstmt->execute();
+					$saved_backgrounds = $backgroundstmt->fetchAll();
+					
+					$alignmentstmt = $myPDO->prepare("SELECT char_alignment FROM saved_npcs WHERE user_id = '$_SESSION[userid]'");
+					$alignmentstmt->execute();
+					$saved_alignments = $alignmentstmt->fetchAll();
+					
+					$weaponstmt = $myPDO->prepare("SELECT NPC_weapon FROM saved_npcs WHERE user_id = '$_SESSION[userid]'");
+					$weaponstmt->execute();
+					$saved_weapons = $weaponstmt->fetchAll();
+					
+					$lootstmt = $myPDO->prepare("SELECT NPC_loot FROM saved_npcs WHERE user_id = '$_SESSION[userid]'");
+					$lootstmt->execute();
+					$saved_loots = $lootstmt->fetchAll();
+					
+					$damagestmt = $myPDO->prepare("SELECT NPC_weapon_damage FROM saved_npcs WHERE user_id = '$_SESSION[userid]'");
+					$damagestmt->execute();
+					$saved_damages = $damagestmt->fetchAll();
+					//echo saved components
+					for($i = 0; $i<=$numsaved-1; $i++){
+					$echo =
+						'<form id ="component1" method = "post" class = "components" action="save_NPC.php">
+						<div class= comptext id = comptext0> NPC: </div>
+						<div id= namediv>
+						<input class="textboxes" id="name" type="text" name="name" value="'.$saved_names[$i][0].'">
+						<input class="textboxes" id="race" type="text" name="race" value="'.$saved_races[$i][0].'">
+						</div>
+						<input class="textboxes" id="background" type="text" name="background" value="'.$saved_backgrounds[$i][0].'">
+						<div class= comptext id = comptext1> Alignment: </div>
+						<input class="textboxes" id="alignment" type="text" name="alignment" value="'.$saved_alignments[$i][0].'">
+						<div class= comptext id = comptext1> <?php echo $names[$index];?> has the following items: </div>
+						<input class="textboxes" id="weapons" type="text" name="weapons" value="'.$saved_weapons[$i][0].'">
+						<input class="textboxes" id="loots" type="text" name="loots" value="'.$saved_loots[$i][0].'">
+						<div class= comptext id = comptext1>'. $saved_names[$i][0] .' can perform this attack with a '.$saved_weapons[$i][0].'</div>
+						<input class="textboxes" id="damages" type="text" name="damages" value="'.$saved_damages[$i][0].'">
+						<input id="hiddentextboxes" type="text" name="saved_id" value="'.$saved_id[$i][0].'">
+						<input id = "submit" type="submit" value="Save">';
+						
+							if (isset($_SESSION['message'])) {
+									$echo .="<div id='message'>" . $_SESSION['message'] . "</div>";
+								}
+								unset($_SESSION['message']);
+						$echo .=
+						'</form>';
+						echo $echo;
+					}
 				}
 			}
 			?>

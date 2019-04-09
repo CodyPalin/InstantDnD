@@ -66,8 +66,8 @@ array_push($backstories, $myPDO->query("select backstory from item_backstories w
 		<ul id = components>
 		<?php
 			if(!$_SESSION['view_saved']){
-				echo
-				'<form id ="component1" class = "components" action="save_items.php">
+				$echo =
+				'<form id ="component1" method="post" class = "components" action="save_items.php">
 					<div class= comptext id = comptext0> Magical weapon: </div>
 					<div id= weapondiv>
 					<input class="textboxes" id="weapons" type="text" name="weapons" value="'.$weapons[$index].'">
@@ -78,9 +78,16 @@ array_push($backstories, $myPDO->query("select backstory from item_backstories w
 					<input class="textboxes" id="damages" type="text" name="damages" value="'.$damages[$index].'">
 					<div class= comptext id = comptext1> The item also has the following additional effect: </div>
 					<textarea class="textboxes" id="effects" rows="6"  name="effects" >'.$effects[$index].'</textarea>
-					<input id = "submit" type="submit" value="Save">
-				</form>
+					<input id = "submit" type="submit" value="Save">';					
+					
+						if (isset($_SESSION['message'])) {
+							$echo .="<div id='message'>" . $_SESSION['message'] . "</div>";
+						}
+						unset($_SESSION['message']);
+				$echo .=
+				'</form>
 				<input type=button id ="add" value="+" class = "components">';
+				echo $echo;
 			}
 			else
 			{
@@ -94,6 +101,56 @@ array_push($backstories, $myPDO->query("select backstory from item_backstories w
 				}
 				else{
 					//display saved
+					
+					//fetch saved data
+					$idstmt = $myPDO->prepare("SELECT id FROM saved_items WHERE user_id = '$_SESSION[userid]'");
+					$idstmt->execute();
+					$saved_id = $idstmt->fetchAll();
+					
+					$weaponstmt = $myPDO->prepare("SELECT item_type FROM saved_items WHERE user_id = '$_SESSION[userid]'");
+					$weaponstmt->execute();
+					$saved_weapon = $weaponstmt->fetchAll();
+					
+					$adjstmt = $myPDO->prepare("SELECT item_adjective FROM saved_items WHERE user_id = '$_SESSION[userid]'");
+					$adjstmt->execute();
+					$saved_adjective = $adjstmt->fetchAll();
+					
+					$backstorystmt = $myPDO->prepare("SELECT item_backstory FROM saved_items WHERE user_id = '$_SESSION[userid]'");
+					$backstorystmt->execute();
+					$saved_backstory = $backstorystmt->fetchAll();
+					
+					$damagestmt = $myPDO->prepare("SELECT item_damage FROM saved_items WHERE user_id = '$_SESSION[userid]'");
+					$damagestmt->execute();
+					$saved_damage = $damagestmt->fetchAll();
+					
+					$effectstmt = $myPDO->prepare("SELECT item_effects FROM saved_items WHERE user_id = '$_SESSION[userid]'");
+					$effectstmt->execute();
+					$saved_effect = $effectstmt->fetchAll();
+					//echo saved components
+					for($i = 0; $i<=$numsaved-1; $i++){
+					$echo =
+						'<form id ="component1" method = "post" class = "components" action="save_items.php">
+						<div class= comptext id = comptext0> Magical weapon: </div>
+						<div id= weapondiv>
+						<input class="textboxes" id="weapons" type="text" name="weapons" value="'.$saved_weapon[$i][0].'">
+						<input class="textboxes" id="adjectives" type="text" name="adjectives" value="'.$saved_adjective[$i][0].'">
+						</div>
+						<textarea class="textboxes" id="backstories" rows="3"  name="backstories">'.$saved_backstory[$i][0].'</textarea>
+						<div class= comptext id = comptext1> On hit, the item does the damage shown below: </div>
+						<input class="textboxes" id="damages" type="text" name="damages" value="'.$saved_damage[$i][0].'">
+						<div class= comptext id = comptext1> The item also has the following additional effect: </div>
+						<textarea class="textboxes" id="effects" rows="6"  name="effects" >'.$saved_effect[$i][0].'</textarea>
+						<input id="hiddentextboxes" type="text" name="saved_id" value="'.$saved_id[$i][0].'">
+						<input id = "submit" type="submit" value="Save">';					
+						
+							if (isset($_SESSION['message'])) {
+								$echo .="<div id='message'>" . $_SESSION['message'] . "</div>";
+							}
+							unset($_SESSION['message']);
+					$echo .='</form>';
+					echo $echo;
+					}
+					
 				}
 			}
 		?>
