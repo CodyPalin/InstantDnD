@@ -4,7 +4,11 @@ include 'filter.php';
 include 'Dao.php';
 $Dao = new Dao();
 $myPDO=$Dao->getConnection();
-
+if(!$_SESSION['logged_in']){
+	$_SESSION['message'] = "You must be logged in to do this.";
+	header("Location: ".$_SESSION['current_page']);
+	exit();
+}
 $_POST["name"] = filter($_POST["name"]);
 $_POST["dungeon_environment"] = filter($_POST["dungeon_environment"]);
 $_POST["dungeon_lighting"] = filter($_POST["dungeon_lighting"]);
