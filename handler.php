@@ -5,7 +5,7 @@ include 'filter.php';
 $Dao = new Dao();
 $myPDO=$Dao->getConnection();
 $_POST["username"] = filter($_POST["username"]);
-$_POST["password"] = filter($_POST["password"]);
+$_POST["password"] = hashFunction($_POST["password"]);
 $password_in_the_database = $myPDO->query("select password from user where username = '$_POST[username]'")->fetch()[0];
 if ($password_in_the_database != $_POST["password"]) {
 	$_SESSION['message'] = "Error, the password was incorrect";

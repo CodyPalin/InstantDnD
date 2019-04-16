@@ -33,7 +33,7 @@ else if ($_POST["password"] == "") {
 }
 else {
 	$_POST["username"] = filter($_POST["username"]);
-	$_POST["password"] = filter($_POST["password"]);
+	$_POST["password"] = hashFunction($_POST["password"]);
 	$sql = "INSERT INTO user (username, password) VALUES (?,?)";
 	//prepare query to prevent sql injection attacks
 	$stmt= $myPDO->prepare($sql);
