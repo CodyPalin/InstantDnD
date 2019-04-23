@@ -3,3 +3,12 @@
 #encounters{
 background-color: yellow;
 }
+
+.components{
+  height: auto;
+}
+.generatebutton{
+background-color: limegreen;
+border-color: limegreen;
+margin: 2 127;
+}

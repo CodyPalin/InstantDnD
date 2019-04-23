@@ -86,6 +86,7 @@ cursor: pointer;
 }
 #character-sheets{
   width: 150;
+  display: none;
 }
 #html{
 background-color: #f8f8f8

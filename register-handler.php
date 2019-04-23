@@ -4,6 +4,7 @@ include 'Dao.php';
 include 'filter.php';
 $Dao = new Dao();
 $myPDO=$Dao->getConnection();
+$_POST["username"] = filter($_POST["username"]);
 
 if(!isset($_SESSION['current_page']))
 	$_SESSION['current_page'] = "items.php";
@@ -32,7 +33,6 @@ else if ($_POST["password"] == "") {
 	exit();
 }
 else {
-	$_POST["username"] = filter($_POST["username"]);
 	$_POST["password"] = hashFunction($_POST["password"]);
 	$sql = "INSERT INTO user (username, password) VALUES (?,?)";
 	//prepare query to prevent sql injection attacks
