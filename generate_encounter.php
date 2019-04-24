@@ -34,14 +34,14 @@ for($i=1;$i<=$types;$i++)
 	
 }
 $result =
-	'<form id ="component1" method = "post" class = "components" action="save_encounter.php">
+	'<form id new_component1" method = "post" class = "components" action="save_encounter.php">
 		<div class= comptext id = comptext0> You encounter '.$num_monsters.' monsters: </div>';
 		for($i=1;$i<=$types;$i++)
 		{
 			$plural = 's';
 			if($num_monster[$i] ==1)
 				$plural = '';
-			$result.='<input class="textboxes" id="monster'.$i.'" type="text" name="name" value="'.$num_monster[$i].' '.$type[$i]['monster'].$plural.'">';
+			$result.='<input class="textboxes" id="monster'.$i.'" type="text" name="monster'.$i.'" value="'.$num_monster[$i].' '.$type[$i]['monster'].$plural.'">';
 		}
 $result.='<input id = "submit" type="submit" value="Save"></form>';
 echo $result;

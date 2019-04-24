@@ -123,7 +123,7 @@ array_push($loot_locations, $myPDO->query("select location from dungeon_loot_loc
 					//echo saved components
 					for($i = 0; $i<=$numsaved-1; $i++){
 					$echo =
-					'<form id ="component1" method = "post" class = "components" action="save_dungeon.php">
+					'<form id ="component'.$i.'" method = "post" class = "components" action="save_dungeon.php">
 						<div class= comptext id = comptext0> The dungeon is: </div>
 						<input class="textboxes" id="name" type="text" name="name" value="'.$saved_name[$i][0].'">
 						<div class= comptext id = comptext0> and is located: </div>

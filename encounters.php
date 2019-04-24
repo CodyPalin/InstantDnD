@@ -29,24 +29,14 @@ $myPDO=$Dao->getConnection();
 				data: dataString,
 				success: function(result){
 					$("#"+id).html(result);
+					$("#"+id).attr("onsubmit","");
+					$("#"+id).attr("action","save_encounter.php");
+					$("#"+id).attr("id", "new_".id);
+					
 				}
 			});
 		}
-		/*$("#component1").submit(function( event ){
-        //
 		
-		event.preventDefault();
-        $.ajax({
-            type: 'POST',
-            url: 'yourfile.php',
-            data: 'id=someid',
-            success: function(data){
-                // If you want, alert whatever your PHP script outputs
-                alert(data);
-            }
-        });
-        return false;
-		});*/
 	</script>
   <body>
     	<div id="container">
@@ -110,22 +100,65 @@ $myPDO=$Dao->getConnection();
 							</select>
 							<input id = 'generate1' class=\"generatebutton\" type='submit' value='Generate'>
 						";
+						if (isset($_SESSION['message'])) {
+							$echo .="<div id='message'>" . $_SESSION['message'] . "</div>";
+						}
+						unset($_SESSION['message']);
 				$echo .=	
 				'</form>
 				<input type=button id ="add" value="+" class = "components">';
 				echo $echo;
 			}
-			else
-			{
+			else //if saved is set
+			{	//show saved components
 				$numsavedstmt = $myPDO->prepare("select saved_encounters from user where username = '$_SESSION[user]'");
 				$numsavedstmt->execute();
 				$numsaved = (($numsavedstmt->fetch()[0]));
 				if($numsaved == 0){
-				echo '	<form id ="component1" class = "components" action="save_dungeon.php">
+				echo '	<form id ="component1" class = "components" action="save_encounter.php">
 						<div class= comptext id = comptext0> You currently have no saved encounters. Generate more and then save an encounter you like. </div>
 						</form>';
 				}
-				//else{} //show saved components
+				else{
+					$stmt = $myPDO->prepare("SELECT * FROM saved_encounters WHERE user_id = '$_SESSION[userid]'");
+					$stmt->execute();
+					$saved = $stmt->fetchAll();
+					//print_r($saved);
+					$idstmt = $myPDO->prepare("SELECT id FROM saved_encounters WHERE user_id = '$_SESSION[userid]'");
+					$idstmt->execute();
+					$saved_id = $idstmt->fetchAll();
+					
+					//$saved['monster1'] through monster 8 are arrays, empty elements will be null
+					
+					//echo saved components
+					for($i = 0; $i<=$numsaved-1; $i++){
+						
+						$numMonsters = 8;
+						for($j = 1; $j<=8; $j++)
+						{
+							if(is_null($saved[$i]['monster'.$j])){
+								$numMonsters = $j-1;
+								break;
+							}
+						}
+						
+						$echo =
+							'<form id new_component'.$i.'" method = "post" class = "components" action="save_encounter.php">
+								<div class= comptext id = comptext0> You encounter these monsters: </div>';
+								for($j=1;$j<=$numMonsters;$j++)
+								{
+									
+									$echo.='<input class="textboxes" id="monster'.$j.'" type="text" name="monster'.$j.'" value="'.$saved[$i]['monster'.$j].'">';
+								}
+								if (isset($_SESSION['message'])) {
+								$echo .="<div id='message'>" . $_SESSION['message'] . "</div>";
+								}
+								unset($_SESSION['message']);
+						$echo.='<input id="hiddentextboxes" type="text" name="saved_id" value="'.$saved_id[$i][0].'">
+								<input id = "submit" type="submit" value="Save"></form>';
+						echo $echo;
+					}
+				} 
 			}
 			?>
 		</ul>

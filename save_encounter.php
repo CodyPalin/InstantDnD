@@ -10,16 +10,19 @@ if(!$_SESSION['logged_in']){
 	exit();
 }
 $numMonsters = 8;
-for($i = 1; i<=8; i++)
+$params = [];
+$params[0] = $_SESSION['userid'];
+for($i = 1; $i<=8; $i++)
 {
-	if(isset($_POST["monster".$i]){
+	if(isset($_POST["monster".$i])){
 		$_POST["monster".$i] = filter($_POST["monster".$i]);
 		
 		if(strlen($_POST["monster".$i]) >64){
-		$_SESSION['message'] = "Limit: 64 characters.";
-		header("Location: dungeons.php");
-		exit();
+			$_SESSION['message'] = "Limit: 64 characters.";
+			header("Location: dungeons.php");
+			exit();
 		}
+		$params[$i] = $_POST["monster".$i];
 	}
 	else {
 		$numMonsters = $i-1;
@@ -27,30 +30,44 @@ for($i = 1; i<=8; i++)
 	}
 }
 
-
-else{
-	$id = $_SESSION['userid'];
-	if(!isset($_POST["saved_id"])){
-		$sql = "INSERT INTO saved_dungeons (user_id, dungeon_name, dungeon_environment, dungeon_lighting, loot_locations) VALUES (?,?,?,?,?)";
-		$insertstmt = $myPDO->prepare($sql);
-		$insertstmt->execute([$id, $_POST["name"],$_POST["dungeon_environment"],$_POST["dungeon_lighting"],$_POST["loot_locations"]]);
-		
-		$numstmt = $myPDO->prepare("UPDATE user SET saved_dungeons = saved_dungeons+1 WHERE id = '$id'");
-		$numstmt->execute();
-		$_SESSION['message'] = "Saved Successfully!";
-	}
-	else
+$id = $_SESSION['userid'];
+if(!isset($_POST["saved_id"])){
+	$sql = "INSERT INTO saved_encounters (user_id";
+	for($i = 1; $i<=$numMonsters; $i++)
 	{
-		//update saved
-		$sql = "UPDATE saved_dungeons SET dungeon_name ='".$_POST['name']."', dungeon_environment='".$_POST['dungeon_environment']."', dungeon_lighting='".$_POST['dungeon_lighting']."', loot_locations='".$_POST['loot_locations']."' WHERE id =".$_POST['saved_id'];
-		$updatestmt = $myPDO->prepare($sql);
-		$updatestmt->execute();
-		$_SESSION['message'] = "Updated Successfully!";
+		$sql.=","."monster".$i;
 	}
+	$sql.=") VALUES (?";
+	for($i = 1; $i<=$numMonsters; $i++)
+	{
+		$sql.=",?";
+	}
+	$sql.=")";
+	$insertstmt = $myPDO->prepare($sql);
+	$insertstmt->execute($params);
 	
-	
-	
-	header("Location: dungeons.php");
-	exit();
+	$numstmt = $myPDO->prepare("UPDATE user SET saved_encounters = saved_encounters+1 WHERE id = '$id'");
+	$numstmt->execute();
+	$_SESSION['message'] = "Saved Successfully!";
 }
+else
+{
+	//update saved
+	$sql = "UPDATE saved_encounters SET ";
+	for($i = 1; $i<=$numMonsters; $i++)
+	{
+		if($i == $numMonsters)
+			$sql .= "monster".$i." = '".$_POST['monster'.$i];
+		else
+			$sql .= "monster".$i." = '".$_POST['monster'.$i]."', ";
+	}
+	$sql .= "' WHERE id =".$_POST['saved_id'];
+	$updatestmt = $myPDO->prepare($sql);
+	$updatestmt->execute();
+	$_SESSION['message'] = "Updated Successfully!";
+}
+
+
+header("Location: encounters.php");
+exit();
 ?>

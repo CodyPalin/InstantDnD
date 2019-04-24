@@ -129,7 +129,7 @@ array_push($backstories, $myPDO->query("select backstory from item_backstories w
 					//echo saved components
 					for($i = 0; $i<=$numsaved-1; $i++){
 					$echo =
-						'<form id ="component1" method = "post" class = "components" action="save_items.php">
+						'<form id ="component'.$i.'" method = "post" class = "components" action="save_items.php">
 						<div class= comptext id = comptext0> Magical weapon: </div>
 						<div id= weapondiv>
 						<input class="textboxes" id="weapons" type="text" name="weapons" value="'.$saved_weapon[$i][0].'">

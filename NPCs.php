@@ -150,7 +150,7 @@ array_push($backgrounds, $myPDO->query("select NPC_background from npc_backgroun
 					//echo saved components
 					for($i = 0; $i<=$numsaved-1; $i++){
 					$echo =
-						'<form id ="component1" method = "post" class = "components" action="save_NPC.php">
+						'<form id ="component'.$i.'" method = "post" class = "components" action="save_NPC.php">
 						<div class= comptext id = comptext0> NPC: </div>
 						<div id= namediv>
 						<input class="textboxes" id="name" type="text" name="name" value="'.$saved_names[$i][0].'">
